@@ -4,12 +4,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-login = os.getenv("login")
-token = os.getenv("token")
+login = os.getenv("LOGIN")
+token = os.getenv("TOKEN")
+
+SENDER_EMAIL = "devmanorg@yandex.ru"
+RECIPIENT_EMAIL = "utkinmihael@yandex.ru"
 
 letter = """\
-From: devmanorg@yandex.ru
-To: utkinmihael@yandex.ru
+From: {sender}
+To: {recipient}
 Subject: Приглашение!
 Content-Type: text/plain; charset="UTF-8";
 
@@ -30,12 +33,12 @@ Content-Type: text/plain; charset="UTF-8";
 Регистрируйся → %website%
 На курсы, которые еще не вышли, можно подписаться и получить уведомление о релизе сразу на имейл."""
 
+letter = letter.format(sender=SENDER_EMAIL, recipient=RECIPIENT_EMAIL)
 letter = letter.replace("%website%", "https://dvmn.org/profession-ref-program/dezzzzlife/Z3cA4/")
 letter = letter.replace("%friend_name%", "Вова")
 letter = letter.replace("%my_name%", "Тимур")
 letter = letter.encode("UTF-8")
 server = smtplib.SMTP_SSL('smtp.yandex.ru', 465)
 server.login(login, token)
-server.sendmail("devmanorg@yandex.ru", "utkinmihael@yandex.ru", letter)
+server.sendmail(SENDER_EMAIL, RECIPIENT_EMAIL, letter)
 server.quit()
-print(letter)
